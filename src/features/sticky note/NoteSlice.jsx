@@ -14,14 +14,26 @@ export const NoteSlice = createSlice({
       state.note = action.payload
     },
     addNote: (state) => {
-      state.noteList.push(state.note)
+      const newNote = {
+        ...state.note,
+        id: nanoid(),
+        date: new Date().toLocaleDateString("en-IN"),
+        time: `${new Date().getHours()}:${new Date().getMinutes()}`,
+      };
+      state.noteList.push(newNote);
+      localStorage.setItem("noteList", JSON.stringify(state.noteList));
+      state.note = { id: nanoid(), title: "", description: "", date: "", time: "" };
     },
     removeNote: (state, action) => {
       state.noteList = state.noteList.filter((ele)=> ele.id != action.payload)
+      localStorage.setItem("noteList", JSON.stringify(state.noteList));
     },
+    updateNote: (state, action) => {
+      state.noteList = state.noteList.map((ele)=> ele.id === action.payload ? {...ele , title:state.note.title , description:state.note.description } : ele)
+    }
   },
 });
 
-export const {setInput , addNote , removeNote} = NoteSlice.actions;
+export const {setInput , addNote , removeNote , updateNote} = NoteSlice.actions;
 
 export default NoteSlice.reducer;

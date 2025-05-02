@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addNote, setInput } from "../features/sticky note/NoteSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const AddNote = () => {
-  const note = useSelector((state) => state.note); 
-  const noteList = useSelector((state) => state.noteList); 
+  const [flag, setFlag] = useState(false);
+  const note = useSelector((state) => state.note);
+  const noteList = useSelector((state) => state.noteList);
   const dispatch = useDispatch();
 
   //  To set the input in the input fields
@@ -13,25 +14,25 @@ const AddNote = () => {
     dispatch(setInput({ ...note, [name]: value }));
   }
 
-  const handleSubmit =(e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(!note.title){
-        alert("Title is required")
+    if (!note.title) {
+      setFlag(true);
+    } else {
+      dispatch(addNote(note));
+      setFlag(false)
     }
-    else{
-      dispatch(addNote(note))
-    }  
-    dispatch(setInput({id:"" , title:"" , description:"" , date :new Date().toLocaleDateString("en-In"),  time:`${new Date().getHours()}:${new Date().getMinutes()}`}))
-  }
+  };
   console.log(noteList);
 
-  useEffect(()=>{
-      localStorage.setItem("noteList" , JSON.stringify(noteList))
-  }, [note])
+ 
 
   return (
     <>
-      <div className="w-full flex justify-center items-center  md:p-10 p-5">
+      <div className="w-full flex flex-col justify-center items-center  md:p-10 p-5">
+        {flag && (
+          <p className="text-red-300 text-sm text-center">Title is required</p>
+        )}
         <div className="bg-white w-full relative md:max-w-lg shadow-lg p-4 rounded-lg flex flex-col">
           <input
             type="text"
@@ -51,7 +52,11 @@ const AddNote = () => {
             onChange={handleChange}
             id=""
           ></textarea>
-          <button type="submit" className="rounded-full flex justify-center text-white hover:scale-120 hover:text-black items-center bg-amber-200 px-2 text-4xl absolute -bottom-4 right-8 md:right-10" onClick={handleSubmit}>
+          <button
+            type="submit"
+            className="rounded-full flex justify-center text-white hover:scale-120 hover:text-black items-center bg-amber-200 px-2 text-4xl absolute -bottom-4 right-8 md:right-10"
+            onClick={handleSubmit}
+          >
             +
           </button>
         </div>
