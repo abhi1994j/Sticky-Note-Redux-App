@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeNote,
-  setInput,
+  // setInput,
   updateNote,
 } from "../features/sticky note/NoteSlice";
 import { useEffect, useState } from "react";
@@ -12,8 +12,8 @@ const NoteList = () => {
   const [iseditId, setIsEditId] = useState(null);
 
   const noteList = useSelector((state) => state.noteList);
-  const note = useSelector((state) => state.note);
-  
+  // const note = useSelector((state) => state.note);
+
   const dispatch = useDispatch();
 
   function handleDelete(id) {

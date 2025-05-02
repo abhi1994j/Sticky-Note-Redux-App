@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { addNote, setInput } from "../features/sticky note/NoteSlice";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 
 const AddNote = () => {
   const [flag, setFlag] = useState(false);
