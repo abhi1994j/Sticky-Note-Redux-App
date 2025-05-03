@@ -36,7 +36,7 @@ const NoteList = () => {
 
   return (
     <>
-      <div className="p-4 w-full flex gap-4 flex-wrap">
+      <div className="p-4 w-full min-h-[50vh] flex gap-4 flex-wrap">
         {noteList.map((ele) => {
           console.log(ele);
           return (
