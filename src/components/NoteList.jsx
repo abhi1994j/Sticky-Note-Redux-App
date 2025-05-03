@@ -9,10 +9,11 @@ import {
 import { useEffect, useState } from "react";
 const NoteList = () => {
   const [flag, setFlag] = useState(false);
+   const [description, setDescription] = useState("");
   const [iseditId, setIsEditId] = useState(null);
 
   const noteList = useSelector((state) => state.noteList);
-  // const note = useSelector((state) => state.note);
+  const note = useSelector((state) => state.note);
 
   const dispatch = useDispatch();
 
@@ -23,11 +24,12 @@ const NoteList = () => {
 
   function handleEdit(id) {
     setIsEditId(id);
+    setDescription(note.description);
     setFlag(!flag);
   }
 
   function handleUpdate(id) {
-    dispatch(updateNote(id));
+    dispatch(updateNote({id:id , description:description}));
   }
 
   useEffect(() => {
@@ -68,6 +70,9 @@ const NoteList = () => {
                 rows={`${flag && iseditId === ele.id ? "5" : "3"}`}
                 className={`bg-gray-100  px-2 font-bold outline-0 border-0 break-words`}
                 id=""
+                value={flag && iseditId === ele.id ? description : ele.description}
+                disabled={flag && iseditId !== ele.id ? true : false}
+                onChange={(e) => setDescription(e.target.value)}
               >
                 {ele.description}
               </textarea>

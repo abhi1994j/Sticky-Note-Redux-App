@@ -29,7 +29,12 @@ export const NoteSlice = createSlice({
       localStorage.setItem("noteList", JSON.stringify(state.noteList));
     },
     updateNote: (state, action) => {
-      state.noteList = state.noteList.map((ele)=> ele.id === action.payload ? {...ele , title:state.note.title , description:state.note.description } : ele)
+      const { id, description } = action.payload;
+      const noteIndex = state.noteList.findIndex((note) => note.id === id);
+      if (noteIndex !== -1) {
+        state.noteList[noteIndex].description = description;
+      }
+      // localStorage.setItem("noteList", JSON.stringify(state.noteList));
     }
   },
 });
