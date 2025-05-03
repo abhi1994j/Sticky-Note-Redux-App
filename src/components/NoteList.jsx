@@ -3,12 +3,13 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeNote,
-  // setInput,
+  setInput,
   updateNote,
 } from "../features/sticky note/NoteSlice";
 import { useEffect, useState } from "react";
 const NoteList = () => {
   const [flag, setFlag] = useState(false);
+  const [update ,isUpdate] = useState(false)
    const [description, setDescription] = useState("");
   const [iseditId, setIsEditId] = useState(null);
 
@@ -24,12 +25,15 @@ const NoteList = () => {
 
   function handleEdit(id) {
     setIsEditId(id);
+    const selectedNote = noteList.find((ele) => ele.id === id);
+    dispatch(setInput({ ...selectedNote }));
     setDescription(note.description);
     setFlag(!flag);
   }
 
   function handleUpdate(id) {
     dispatch(updateNote({id:id , description:description}));
+    isUpdate(true)
   }
 
   useEffect(() => {
@@ -70,9 +74,10 @@ const NoteList = () => {
                 rows={`${flag && iseditId === ele.id ? "5" : "3"}`}
                 className={`bg-gray-100  px-2 font-bold outline-0 border-0 break-words`}
                 id=""
+                name="description"
                 value={flag && iseditId === ele.id ? description : ele.description}
                 disabled={flag && iseditId !== ele.id ? true : false}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setDescription(e.target.name = e.target.value)}
               >
                 {ele.description}
               </textarea>
